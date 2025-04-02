@@ -50,17 +50,20 @@ module.exports = {
 
     // Добавляем паттерны
     const patterns = [
-      { id: 1, url: 'https://example.com/pattern1.png', createdAt: new Date(), updatedAt: new Date() },
-      { id: 2, url: 'https://example.com/pattern2.png', createdAt: new Date(), updatedAt: new Date() },
+      {
+        id: 1,
+        url: 'https://example.com/pattern1.png',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: 2,
+        url: 'https://example.com/pattern2.png',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ];
     await queryInterface.bulkInsert('Patterns', patterns);
-
-    // Добавляем изображения
-    const images = [
-      { id: 1, url: 'https://example.com/sock1.png', createdAt: new Date(), updatedAt: new Date() },
-      { id: 2, url: 'https://example.com/sock2.png', createdAt: new Date(), updatedAt: new Date() },
-    ];
-    await queryInterface.bulkInsert('Images', images);
 
     // Добавляем носки
     const socks = [
@@ -71,7 +74,7 @@ module.exports = {
         colorId: 1,
         patternId: 1,
         userId: 1,
-        imageId: 1,
+        desingURL: 'https://example.com/design1.png',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -82,7 +85,7 @@ module.exports = {
         colorId: 2,
         patternId: 2,
         userId: 2,
-        imageId: 2,
+        desingURL: 'https://example.com/design2.png',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -91,13 +94,7 @@ module.exports = {
 
     // Добавляем заказы
     const orders = [
-      {
-        id: 1,
-        userId: 1,
-        isOrdered: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
+      { id: 1, userId: 1, isOrdered: true, createdAt: new Date(), updatedAt: new Date() },
       {
         id: 2,
         userId: 2,
@@ -135,10 +132,10 @@ module.exports = {
 
     // Добавляем лайки
     const likes = [
-      { id: 1, userId: 1, sockId: 2, createdAt: new Date(), updatedAt: new Date() }, // Денис лайкнул зелёные носки
-      { id: 2, userId: 2, sockId: 1, createdAt: new Date(), updatedAt: new Date() }, // Лиса лайкнула красные носки
-      { id: 3, userId: 3, sockId: 1, createdAt: new Date(), updatedAt: new Date() }, // Никита тоже лайкнул красные
-      { id: 4, userId: 4, sockId: 2, createdAt: new Date(), updatedAt: new Date() }, // Настя лайкнула зелёные
+      { id: 1, userId: 1, sockId: 2, createdAt: new Date(), updatedAt: new Date() },
+      { id: 2, userId: 2, sockId: 1, createdAt: new Date(), updatedAt: new Date() },
+      { id: 3, userId: 3, sockId: 1, createdAt: new Date(), updatedAt: new Date() },
+      { id: 4, userId: 4, sockId: 2, createdAt: new Date(), updatedAt: new Date() },
     ];
     await queryInterface.bulkInsert('Likes', likes);
   },
@@ -148,7 +145,6 @@ module.exports = {
     await queryInterface.bulkDelete('Carts', null, {});
     await queryInterface.bulkDelete('Orders', null, {});
     await queryInterface.bulkDelete('Socks', null, {});
-    await queryInterface.bulkDelete('Images', null, {});
     await queryInterface.bulkDelete('Patterns', null, {});
     await queryInterface.bulkDelete('Colors', null, {});
     await queryInterface.bulkDelete('Users', null, {});

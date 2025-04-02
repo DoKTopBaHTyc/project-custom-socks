@@ -10,9 +10,9 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Pattern, {
         foreignKey: 'patternId',
       });
-      this.belongsTo(models.Image, {
-        foreignKey: 'imageId',
-      });
+      // this.belongsTo(models.Image, {
+      //   foreignKey: 'imageId',
+      // });
       this.belongsTo(models.User, {
         foreignKey: 'userId',
         as: 'creator',
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       colorId: DataTypes.INTEGER,
       patternId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
-      imageId: DataTypes.INTEGER,
+      desingURL: DataTypes.STRING,
     },
     {
       sequelize,

@@ -43,13 +43,17 @@ module.exports = {
         onDelete: 'CASCADE',
         allowNull: false,
       },
-      imageId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Images',
-          key: 'id',
-        },
-        onDelete: 'CASCADE',
+      // imageId: {
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: 'Images',
+      //     key: 'id',
+      //   },
+      //   onDelete: 'CASCADE',
+      //   allowNull: false,
+      // },
+      desingURL: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       createdAt: {
