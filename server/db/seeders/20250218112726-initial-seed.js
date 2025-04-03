@@ -36,23 +36,33 @@ module.exports = {
     ];
     await queryInterface.bulkInsert('Users', users);
 
-    // Добавляем цвета
-    const colors = [
-      { hex: '#FF5733', createdAt: new Date(), updatedAt: new Date() },
-      { hex: '#33FF57', createdAt: new Date(), updatedAt: new Date() },
-      { hex: '#3357FF', createdAt: new Date(), updatedAt: new Date() },
-    ];
-    await queryInterface.bulkInsert('Colors', colors);
+    // // Добавляем цвета
+    // const colors = [
+    //   { hex: '#FF5733', createdAt: new Date(), updatedAt: new Date() },
+    //   { hex: '#33FF57', createdAt: new Date(), updatedAt: new Date() },
+    //   { hex: '#3357FF', createdAt: new Date(), updatedAt: new Date() },
+    // ];
+    // await queryInterface.bulkInsert('Colors', colors);
 
     // Добавляем паттерны
     const patterns = [
       {
-        url: 'https://example.com/pattern1.png',
+        url: 'patterns/1.png',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        url: 'https://example.com/pattern2.png',
+        url: 'patterns/2.png',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        url: 'patterns/3.png',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        url: 'patterns/4.png',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -144,6 +154,13 @@ module.exports = {
     await queryInterface.bulkInsert('Carts', cartItems);
 
     // Добавляем лайки
+    const likes = [
+      { userId: 1, sockId: 2, createdAt: new Date(), updatedAt: new Date() },
+      { userId: 2, sockId: 1, createdAt: new Date(), updatedAt: new Date() },
+      { userId: 3, sockId: 1, createdAt: new Date(), updatedAt: new Date() },
+      { userId: 4, sockId: 2, createdAt: new Date(), updatedAt: new Date() },
+    ];
+    await queryInterface.bulkInsert('Likes', likes);
   },
 
   async down(queryInterface, Sequelize) {
@@ -152,7 +169,7 @@ module.exports = {
     await queryInterface.bulkDelete('Orders', null, {});
     await queryInterface.bulkDelete('Socks', null, {});
     await queryInterface.bulkDelete('Patterns', null, {});
-    await queryInterface.bulkDelete('Colors', null, {});
+    // await queryInterface.bulkDelete('Colors', null, {});
     await queryInterface.bulkDelete('Users', null, {});
   },
 };
