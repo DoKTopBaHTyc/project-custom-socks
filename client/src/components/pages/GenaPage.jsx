@@ -1,7 +1,12 @@
-import React from 'react'
+import React from 'react';
+import GenaRightSide from '../ui/GenaRightSide';
+import { Navigate } from 'react-router';
 
-export default function GenaPage() {
+export default function GenaPage({ user }) {
+  if (!user) return <Navigate to="/login" />;
   return (
-    <div>GenaPage</div>
-  )
+    <div>
+      <GenaRightSide />
+    </div>
+  );
 }
