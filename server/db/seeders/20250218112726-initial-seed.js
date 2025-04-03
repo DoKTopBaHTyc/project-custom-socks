@@ -77,7 +77,17 @@ module.exports = {
         colorId: 1,
         patternId: 1,
         userId: 1,
-        desingURL: 'https://example.com/design1.png',
+        desingURL: 'https://google.com/',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: 'Black Socks',
+        price: 500,
+        colorId: 2,
+        patternId: 2,
+        userId: 1,
+        desingURL: 'https://google.com/',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -96,7 +106,12 @@ module.exports = {
 
     // Добавляем заказы
     const orders = [
-      { userId: 1, isOrdered: true, createdAt: new Date(), updatedAt: new Date() },
+      {
+        userId: 1,
+        isOrdered: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
       {
         userId: 2,
         isOrdered: false,
@@ -118,9 +133,18 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        userId: 2,
+        userId: 1,
         sockId: 2,
-        orderId: 2,
+        orderId: 1,
+        quantity: 1,
+        subTotal: 600,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        userId: 2,
+        sockId: 3,
+        orderId: 1,
         quantity: 1,
         subTotal: 600,
         createdAt: new Date(),

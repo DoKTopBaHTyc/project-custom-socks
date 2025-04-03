@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
         as: 'creator',
       });
       this.belongsToMany(models.User, {
-        foreignKey: 'userId',
         through: 'Like',
+        foreignKey: 'sockId',
         as: 'users',
       });
     }

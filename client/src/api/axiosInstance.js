@@ -14,7 +14,7 @@ function setAccessToken(newToken) {
 }
 
 axiosInstance.interceptors.request.use((config) => {
-  if (!config.headers.Authorization) {
+  if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;

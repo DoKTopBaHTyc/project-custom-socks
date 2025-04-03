@@ -1,4 +1,7 @@
 import React from 'react';
+import GenaRightSide from '../ui/GenaRightSide';
+import { Navigate } from 'react-router';
+import React from 'react';
 import BasicCubeScene from '../ui/scenes/BasicCubeScene';
 import ColorPicker from '../ui/ColorPicker';
 import { ColorContextProvider, useColorContext } from '../../context/ColorContext';
@@ -31,8 +34,13 @@ function GenaPageContent() {
   );
 }
 
-export default function GenaPage() {
+export default function GenaPage({ user }) {
+  if (!user) return <Navigate to="/login" />;
   return (
+    <div>
+      <GenaRightSide />
+    </div>
+  );
     <ColorContextProvider>
       <PatternContextProvider>
         <GenaPageContent />
