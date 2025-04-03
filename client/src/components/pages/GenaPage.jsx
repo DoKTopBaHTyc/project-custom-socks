@@ -1,7 +1,6 @@
 import React from 'react';
 import GenaRightSide from '../ui/GenaRightSide';
 import { Navigate } from 'react-router';
-import React from 'react';
 import BasicCubeScene from '../ui/scenes/BasicCubeScene';
 import ColorPicker from '../ui/ColorPicker';
 import { ColorContextProvider, useColorContext } from '../../context/ColorContext';
@@ -28,7 +27,9 @@ function GenaPageContent() {
       <span>
         <PatternPicker />
       </span>
-      {selectedPattern && <div>Выбранный паттерн: {selectedPattern.url || 'Неизвестный паттерн'}</div>}
+      {selectedPattern && (
+        <div>Выбранный паттерн: {selectedPattern.url || 'Неизвестный паттерн'}</div>
+      )}
       <div>GenaPage</div>
     </>
   );
@@ -38,13 +39,12 @@ export default function GenaPage({ user }) {
   if (!user) return <Navigate to="/login" />;
   return (
     <div>
-      <GenaRightSide />
+      <ColorContextProvider>
+        <PatternContextProvider>
+          <GenaRightSide />
+          <GenaPageContent />
+        </PatternContextProvider>
+      </ColorContextProvider>
     </div>
-  );
-    <ColorContextProvider>
-      <PatternContextProvider>
-        <GenaPageContent />
-      </PatternContextProvider>
-    </ColorContextProvider>
   );
 }
