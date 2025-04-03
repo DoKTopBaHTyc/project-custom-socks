@@ -6,10 +6,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         as: 'creations',
       });
-      User.hasMany(models.Cart, {
+      this.hasMany(models.Cart, {
         foreignKey: 'userId',
       });
-      User.belongsToMany(models.Sock, {
+      this.belongsToMany(models.Sock, {
         foreignKey: 'userId',
         through: 'Like',
         as: 'likes',

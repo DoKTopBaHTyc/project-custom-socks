@@ -74,12 +74,23 @@ module.exports = {
         colorId: 1,
         patternId: 1,
         userId: 1,
-        desingURL: 'https://example.com/design1.png',
+        desingURL: 'https://google.com/',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         id: 2,
+        name: 'Black Socks',
+        price: 500,
+        colorId: 2,
+        patternId: 2,
+        userId: 1,
+        desingURL: 'https://google.com/',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: 3,
         name: 'Green Socks',
         price: 600,
         colorId: 2,
@@ -94,7 +105,13 @@ module.exports = {
 
     // Добавляем заказы
     const orders = [
-      { id: 1, userId: 1, isOrdered: true, createdAt: new Date(), updatedAt: new Date() },
+      {
+        id: 1,
+        userId: 1,
+        isOrdered: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
       {
         id: 2,
         userId: 2,
@@ -119,9 +136,19 @@ module.exports = {
       },
       {
         id: 2,
-        userId: 2,
+        userId: 1,
         sockId: 2,
-        orderId: 2,
+        orderId: 1,
+        quantity: 1,
+        subTotal: 600,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: 3,
+        userId: 2,
+        sockId: 3,
+        orderId: 1,
         quantity: 1,
         subTotal: 600,
         createdAt: new Date(),
@@ -131,13 +158,7 @@ module.exports = {
     await queryInterface.bulkInsert('Carts', cartItems);
 
     // Добавляем лайки
-    const likes = [
-      { id: 1, userId: 1, sockId: 2, createdAt: new Date(), updatedAt: new Date() },
-      { id: 2, userId: 2, sockId: 1, createdAt: new Date(), updatedAt: new Date() },
-      { id: 3, userId: 3, sockId: 1, createdAt: new Date(), updatedAt: new Date() },
-      { id: 4, userId: 4, sockId: 2, createdAt: new Date(), updatedAt: new Date() },
-    ];
-    await queryInterface.bulkInsert('Likes', likes);
+
   },
 
   async down(queryInterface, Sequelize) {
