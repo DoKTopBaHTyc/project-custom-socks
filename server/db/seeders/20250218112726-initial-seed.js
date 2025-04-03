@@ -72,7 +72,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 2,
         name: 'Black Socks',
         price: 500,
         colorId: 2,
@@ -83,7 +82,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 3,
         name: 'Green Socks',
         price: 600,
         colorId: 2,
@@ -99,7 +97,6 @@ module.exports = {
     // Добавляем заказы
     const orders = [
       {
-        id: 1,
         userId: 1,
         isOrdered: false,
         createdAt: new Date(),
@@ -126,7 +123,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 2,
         userId: 1,
         sockId: 2,
         orderId: 1,
@@ -136,7 +132,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 3,
         userId: 2,
         sockId: 3,
         orderId: 1,
@@ -149,7 +144,6 @@ module.exports = {
     await queryInterface.bulkInsert('Carts', cartItems);
 
     // Добавляем лайки
-
   },
 
   async down(queryInterface, Sequelize) {
