@@ -106,7 +106,6 @@ export default function CartPage() {
       // Здесь можно добавить обработку ошибки для пользователя
     }
   };
-
   const handleAddToFavorites = async (sockId) => {
     await axiosInstance.post(`/cart/${sockId}`);
     setFavorites([...favorites, sockId]);
