@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
       });
       User.belongsToMany(models.Sock, {
-        foreignKey: 'userId',
         through: 'Like',
+        foreignKey: 'userId',
         as: 'likes',
       });
       this.hasMany(models.Order, {
