@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       });
       this.belongsToMany(models.Sock, {
         foreignKey: 'userId',
-        through: 'Like',
         as: 'likes',
       });
       this.hasMany(models.Order, {

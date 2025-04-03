@@ -71,9 +71,11 @@ function App() {
     axiosInstance
       .get('/tokens/refresh')
       .then((res) => {
+        
         setUser(res.data.user);
         localStorage.setItem('user', JSON.stringify(res.data.user));
         setAccessToken(res.data.accessToken);
+        
       })
       .catch(() => {
         setUser(null);
@@ -116,7 +118,7 @@ function App() {
           />
           <Route
             path="/favorites"
-            element={user ? <FavoritesPage /> : <Navigate to="/login" />}
+            element={user ? <FavoritesPage user={user} /> : <Navigate to="/login" />}
           />
           <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" />} />
           {/* Редирект с неизвестных маршрутов */}
