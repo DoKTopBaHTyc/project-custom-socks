@@ -20,4 +20,5 @@ app.use('/api/gensock', generateRouter);
 app.use('/api/favorites', favoriteRouter);
 app.use('/api/cart', cartRouter);
 
+
 module.exports = app;
