@@ -6,7 +6,6 @@ module.exports = {
     // Добавляем пользователей
     const users = [
       {
-        id: 1,
         name: 'Denis',
         email: 'Denis@mail.com',
         password: await bcrypt.hash('123456', 10),
@@ -14,7 +13,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 2,
         name: 'Lisa',
         email: 'Lisa@mail.com',
         password: await bcrypt.hash('123456', 10),
@@ -22,7 +20,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 3,
         name: 'Nikita',
         email: 'Nikita@mail.com',
         password: await bcrypt.hash('123456', 10),
@@ -30,7 +27,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 4,
         name: 'Nastya',
         email: 'Nastya@mail.com',
         password: await bcrypt.hash('123456', 10),
@@ -40,25 +36,33 @@ module.exports = {
     ];
     await queryInterface.bulkInsert('Users', users);
 
-    // Добавляем цвета
-    const colors = [
-      { id: 1, hex: '#FF5733', createdAt: new Date(), updatedAt: new Date() },
-      { id: 2, hex: '#33FF57', createdAt: new Date(), updatedAt: new Date() },
-      { id: 3, hex: '#3357FF', createdAt: new Date(), updatedAt: new Date() },
-    ];
-    await queryInterface.bulkInsert('Colors', colors);
+    // // Добавляем цвета
+    // const colors = [
+    //   { hex: '#FF5733', createdAt: new Date(), updatedAt: new Date() },
+    //   { hex: '#33FF57', createdAt: new Date(), updatedAt: new Date() },
+    //   { hex: '#3357FF', createdAt: new Date(), updatedAt: new Date() },
+    // ];
+    // await queryInterface.bulkInsert('Colors', colors);
 
     // Добавляем паттерны
     const patterns = [
       {
-        id: 1,
-        url: 'https://example.com/pattern1.png',
+        url: 'patterns/1.png',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        id: 2,
-        url: 'https://example.com/pattern2.png',
+        url: 'patterns/2.png',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        url: 'patterns/3.png',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        url: 'patterns/4.png',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -68,7 +72,6 @@ module.exports = {
     // Добавляем носки
     const socks = [
       {
-        id: 1,
         name: 'Red Socks',
         price: 500,
         colorId: 1,
@@ -79,7 +82,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 2,
         name: 'Green Socks',
         price: 600,
         colorId: 2,
@@ -94,9 +96,8 @@ module.exports = {
 
     // Добавляем заказы
     const orders = [
-      { id: 1, userId: 1, isOrdered: true, createdAt: new Date(), updatedAt: new Date() },
+      { userId: 1, isOrdered: true, createdAt: new Date(), updatedAt: new Date() },
       {
-        id: 2,
         userId: 2,
         isOrdered: false,
         createdAt: new Date(),
@@ -108,7 +109,6 @@ module.exports = {
     // Добавляем товары в корзину
     const cartItems = [
       {
-        id: 1,
         userId: 1,
         sockId: 1,
         orderId: 1,
@@ -118,7 +118,6 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id: 2,
         userId: 2,
         sockId: 2,
         orderId: 2,
@@ -132,10 +131,10 @@ module.exports = {
 
     // Добавляем лайки
     const likes = [
-      { id: 1, userId: 1, sockId: 2, createdAt: new Date(), updatedAt: new Date() },
-      { id: 2, userId: 2, sockId: 1, createdAt: new Date(), updatedAt: new Date() },
-      { id: 3, userId: 3, sockId: 1, createdAt: new Date(), updatedAt: new Date() },
-      { id: 4, userId: 4, sockId: 2, createdAt: new Date(), updatedAt: new Date() },
+      { userId: 1, sockId: 2, createdAt: new Date(), updatedAt: new Date() },
+      { userId: 2, sockId: 1, createdAt: new Date(), updatedAt: new Date() },
+      { userId: 3, sockId: 1, createdAt: new Date(), updatedAt: new Date() },
+      { userId: 4, sockId: 2, createdAt: new Date(), updatedAt: new Date() },
     ];
     await queryInterface.bulkInsert('Likes', likes);
   },
@@ -146,7 +145,7 @@ module.exports = {
     await queryInterface.bulkDelete('Orders', null, {});
     await queryInterface.bulkDelete('Socks', null, {});
     await queryInterface.bulkDelete('Patterns', null, {});
-    await queryInterface.bulkDelete('Colors', null, {});
+    // await queryInterface.bulkDelete('Colors', null, {});
     await queryInterface.bulkDelete('Users', null, {});
   },
 };
