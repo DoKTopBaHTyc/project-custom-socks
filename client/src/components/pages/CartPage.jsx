@@ -105,6 +105,7 @@ export default function CartPage() {
       console.error('Ошибка оформления:', error);
       // Здесь можно добавить обработку ошибки для пользователя
     }
+    
   };
   const handleAddToFavorites = async (sockId) => {
     await axiosInstance.post(`/cart/${sockId}`);
