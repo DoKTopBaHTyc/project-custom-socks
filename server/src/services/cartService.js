@@ -1,4 +1,4 @@
-const { Cart, Sock, Order, Likes } = require('../../db/models');
+const { Cart, Sock, Order, Like } = require('../../db/models');
 
 class cartService {
   static async getAllCartItems(userId) {
@@ -54,7 +54,7 @@ class cartService {
   }
 
   static async addToFavorites(userId, sockId) {
-    const favorite = await Likes.create({ userId, sockId });
+    const favorite = await Like.create({ userId, sockId });
     return favorite;
   }
 }
