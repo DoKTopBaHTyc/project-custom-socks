@@ -114,7 +114,7 @@ function App() {
 
           <Route
             path="/gensock"
-            element={user ? <GenaPage /> : <Navigate to="/login" />}
+            element={user ? <GenaPage user={user} /> : <Navigate to="/login" />}
           />
           <Route
             path="/favorites"
