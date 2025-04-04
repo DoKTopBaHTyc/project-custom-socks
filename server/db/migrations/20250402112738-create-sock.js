@@ -32,7 +32,6 @@ module.exports = {
           key: 'id',
         },
         onDelete: 'CASCADE',
-        allowNull: false,
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -54,7 +53,6 @@ module.exports = {
       // },
       desingURL: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       createdAt: {
         allowNull: false,

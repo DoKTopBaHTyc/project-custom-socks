@@ -6,7 +6,7 @@ const favoriteRouter = express.Router();
 
 favoriteRouter.route('/').get(verifyAccessToken, FavoriteController.getFavorites);
 
-favoriteRouter.route('/:id').delete(verifyAccessToken, FavoriteController.delete);
+favoriteRouter.route('/:id').delete(verifyAccessToken, FavoriteController.delete).post(verifyAccessToken, FavoriteController.create);
 
 favoriteRouter.route('/cart/:id').post(verifyAccessToken, FavoriteController.addToCart)
 
