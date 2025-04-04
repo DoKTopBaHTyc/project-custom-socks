@@ -23,10 +23,13 @@ class FavoriteService {
 
   static async delete(userId, id) {
     try {
-      const deletedCount = await Like.findOne({
-        where: { userId, id },
+      const like = await Like.findOne({
+        where: { userId, sockId: id },
       });
-      return await deletedCount.destroy();
+      if (!like) {
+        throw new Error('Запись не найдена');
+      }
+      return await like.destroy();
     } catch (error) {
       console.error('Ошибка при удалении из избранного:', error);
       throw error;
@@ -36,19 +39,17 @@ class FavoriteService {
   static async addInCart({ userId, sockId }) {
     const findSock = await Sock.findByPk(sockId);
     if (!findSock) {
-      throw new Error('Носок не найден')
+      throw new Error('Носок не найден');
     }
 
-      const item = await Cart.findOrCreate({
-        
-        quantity: 1,
-        subTotal: findSock.price,
-        userId,
-        sockId,
-        orderId: 1,
-    })
-  return item
-    
+    const item = await Cart.findOrCreate({
+      quantity: 1,
+      subTotal: findSock.price,
+      userId,
+      sockId,
+      orderId: 1,
+    });
+    return item;
   }
 }
 
