@@ -7,6 +7,9 @@ const authRouter = require('./routes/authRouter');
 const generateRouter = require('./routes/generateRouter');
 const favoriteRouter = require('./routes/favoriteRouter');
 const cartRouter = require('./routes/cartRouter');
+const saveImageRouter = require('./routes/saveImageRouter');
+
+
 
 app.use(express.static('public'));
 app.use(morgan('dev'));
@@ -20,5 +23,7 @@ app.use('/api/gensock', generateRouter);
 app.use('/api/favorites', favoriteRouter);
 
 app.use('/api/cart', cartRouter);
+
+app.use('/api/saveimage', saveImageRouter)
 
 module.exports = app;

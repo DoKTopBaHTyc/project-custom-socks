@@ -72,6 +72,10 @@ class FavoriteService {
 
     return item;
   }
+
+  static create(userId, sockId) {
+    return Like.create({userId, sockId})
+  }
 }
 
 module.exports = FavoriteService;

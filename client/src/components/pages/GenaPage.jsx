@@ -3,17 +3,14 @@ import GenaRightSide from '../ui/GenaRightSide';
 import { Navigate } from 'react-router';
 import BasicCubeScene from '../ui/scenes/BasicCubeScene';
 import ColorPicker from '../ui/ColorPicker';
-import { ColorContextProvider, useColorContext } from '../../context/ColorContext';
-import { PatternContextProvider, usePatternContext } from '../../context/PatternContext';
+import { ColorContextProvider } from '../../context/ColorContext';
+import { PatternContextProvider } from '../../context/PatternContext';
 import PatternPicker from '../ui/PatternPicker';
 import BasicSockScene from '../ui/scenes/BasicSockScene';
 import { Col, Row } from 'react-bootstrap';
 import { ImageContextProvider } from '../../context/ImageContext';
 
 function GenaPageContent() {
-  const { selectedColor } = useColorContext();
-  const { selectedPattern } = usePatternContext();
-
   return (
     <>
       <header
@@ -31,6 +28,7 @@ function GenaPageContent() {
 
 export default function GenaPage({ user }) {
   if (!user) return <Navigate to="/login" />;
+
   return (
     <div>
       <ImageContextProvider>
@@ -49,10 +47,10 @@ export default function GenaPage({ user }) {
                   marginBottom: '2rem', // Добавляем отступ снизу для мобильных устройств
                 }}
               >
-                <GenaPageContent />
+                <GenaPageContent user={user} />
               </Col>
               <Col md={6}>
-                <GenaRightSide />
+                <GenaRightSide user={user} />
               </Col>
             </Row>
           </PatternContextProvider>
