@@ -30,20 +30,20 @@ function HuggingFaceAI({ setImageUrl }) {
     try {
       const translatedText = await translateWithMyMemory(prompt, 'ru|en');
       console.log('Original text:', prompt, '--||-- translated text:', translatedText);
-      const newImage = '/data/patterns/img2.png'; // удалить в проде
+      // const newImage = '/data/patterns/img2.png'; // удалить в проде
       // раскомментить в проде
-      // const response = await axios.post(
-      //   `https://api-inference.huggingface.co/models/${MODEL_ID}`,
-      //   { inputs: translatedText },
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${HF_API_KEY}`,
-      //     },
-      //     responseType: 'blob',
-      //   },
-      // );
+      const response = await axios.post(
+        `https://api-inference.huggingface.co/models/${MODEL_ID}`,
+        { inputs: translatedText },
+        {
+          headers: {
+            Authorization: `Bearer ${HF_API_KEY}`,
+          },
+          responseType: 'blob',
+        },
+      );
 
-      // const newImage = URL.createObjectURL(response.data);
+      const newImage = URL.createObjectURL(response.data);
       setCreatedImage(newImage);
       setImageUrl(newImage)
     } catch (err) {
