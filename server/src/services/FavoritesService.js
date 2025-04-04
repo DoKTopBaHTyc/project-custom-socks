@@ -24,16 +24,13 @@ class FavoriteService {
 
   static async delete(userId, id) {
     try {
- 
       const deletedCount = await Like.findOne({
-     
- 
         where: { userId, sockId: id },
       });
-      if (!like) {
+      if (!deletedCount) {
         throw new Error('Запись не найдена');
       }
-      return await like.destroy();
+      return await deletedCount.destroy();
     } catch (error) {
       console.error('Ошибка при удалении из избранного:', error);
       throw error;
@@ -61,8 +58,8 @@ class FavoriteService {
       orderId = newOrder.id;
       console.log(orderId, '3');
     }
-    
-    const [item, created ] = await Cart.findOrCreate({
+
+    const [item, created] = await Cart.findOrCreate({
       where: { sockId, userId },
       defaults: {
         quantity: 1,
@@ -72,7 +69,6 @@ class FavoriteService {
         orderId,
       },
     });
-    
 
     return item;
   }
