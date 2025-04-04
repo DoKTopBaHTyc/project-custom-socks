@@ -9,6 +9,7 @@ import {
   ListGroup,
   ListGroupItem,
   Row,
+  Spinner
 } from 'react-bootstrap';
 import { Dash, Heart, Plus, Trash } from 'react-bootstrap-icons';
 import axiosInstance from '../../api/axiosInstance';
@@ -18,13 +19,23 @@ export default function CartPage() {
   const [cartItems, setCartItems] = useState([]);
   const [orderStatus, setOrderStatus] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axiosInstance.get('/cart').then((res) => setCartItems(res.data));
-    axiosInstance.get('/favorites').then((res) => {
-      const favoriteSockIds = res.data.map((sock) => sock.id);
-      setFavorites(favoriteSockIds);
-    });
+    const fetchData = async () => {
+      try {
+        const [cartRes, favoritesRes] = await Promise.all([
+          axiosInstance.get('/cart'),
+          axiosInstance.get('/favorites')
+        ]);
+        setCartItems(cartRes.data);
+        setFavorites(favoritesRes.data.map((sock) => sock.id));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
   async function quantityHandler(cartItemId, quantity) {
@@ -40,13 +51,13 @@ export default function CartPage() {
 
   const incrementQuantity = async (cartItemId, quantity) => {
     const newQuantity = quantity + 1;
-    quantityHandler(cartItemId, newQuantity);
+    await quantityHandler(cartItemId, newQuantity);
   };
 
   const decrementQuantity = async (cartItemId, quantity) => {
     if (quantity > 1) {
       const newQuantity = quantity - 1;
-      quantityHandler(cartItemId, newQuantity);
+      await quantityHandler(cartItemId, newQuantity);
     }
   };
 
@@ -57,17 +68,12 @@ export default function CartPage() {
 
   const handleOrder = async () => {
     try {
-      // 1. Подтверждаем заказ на сервере
       await axiosInstance.patch('/cart');
-
-      // 2. Подготовка данных
       const orderData = {
         items: cartItems,
         total: calculateTotal(),
       };
-      // 3. Отправка письма
       await emailService.sendOrderConfirmation('denisoid93@gmail.com', orderData);
-      // 4. Обновление состояния
       setCartItems(
         cartItems.map((item) => ({
           ...item,
@@ -89,14 +95,23 @@ export default function CartPage() {
     return cartItems.reduce((total, item) => total + item.Sock.price * item.quantity, 0);
   };
 
+  if (isLoading) {
+    return (
+      <Container className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
+        <Spinner animation="border" role="status" style={{ width: '4rem', height: '4rem' }}>
+          <span className="visually-hidden">Загрузка...</span>
+        </Spinner>
+      </Container>
+    );
+  }
+
   return (
     <Container className="my-5">
       <h2 className="mb-4">Ваша корзина</h2>
 
-      {cartItems.length === 0 && !orderStatus && (
+      {cartItems.length === 0 && !orderStatus ? (
         <Alert variant="info">Ваша корзина пуста</Alert>
-      )}
-      {orderStatus === 'success' ? (
+      ) : orderStatus === 'success' ? (
         <Alert variant="success" className="text-center">
           <Alert.Heading>Заказ успешно оформлен!</Alert.Heading>
           <p>Спасибо за ваш заказ. Мы свяжемся с вами в ближайшее время.</p>
@@ -111,7 +126,6 @@ export default function CartPage() {
                     <Card>
                       <Card.Body>
                         <Row className="align-items-center">
-                          {/* Изображение товара */}
                           <Col xs={4} md={3}>
                             <Card.Img
                               variant="top"
@@ -121,16 +135,12 @@ export default function CartPage() {
                               style={{ maxHeight: '100px', objectFit: 'contain' }}
                             />
                           </Col>
-
-                          {/* Название и цена */}
                           <Col xs={8} md={5}>
                             <Card.Title className="h6">{el.Sock.name}</Card.Title>
                             <Card.Text>
                               <strong>Цена:</strong> {el.Sock.price} ₽
                             </Card.Text>
                           </Col>
-
-                          {/* Управление количеством и кнопки */}
                           <Col xs={12} md={4} className="mt-2 mt-md-0">
                             <div className="d-flex align-items-center mb-2 justify-content-center justify-content-md-start">
                               <Button
@@ -138,7 +148,6 @@ export default function CartPage() {
                                 size="sm"
                                 onClick={() => decrementQuantity(el.id, el.quantity)}
                                 disabled={el.quantity <= 1}
-                                className="p-1"
                               >
                                 <Dash />
                               </Button>
@@ -149,42 +158,32 @@ export default function CartPage() {
                                 variant="outline-secondary"
                                 size="sm"
                                 onClick={() => incrementQuantity(el.id, el.quantity)}
-                                className="p-1"
                               >
                                 <Plus />
                               </Button>
                             </div>
-
-                            <div className="mb-2 text-center text-md-start">
+                            <div className="mb-2">
                               <strong>Сумма:</strong> {el.subTotal} ₽
                             </div>
-
-                            <div className="d-flex justify-content-center justify-content-md-start gap-2">
+                            <div className="d-flex">
                               <Button
                                 variant="outline-danger"
                                 size="sm"
                                 onClick={() => handleDelete(el.id)}
-                                className="p-1"
+                                className="me-2"
                               >
-                                <Trash size={16} />
+                                <Trash /> Удалить
                               </Button>
                               <Button
-                                variant={
-                                  favorites.includes(el.sockId)
-                                    ? 'outline-danger'
-                                    : 'outline-secondary'
-                                }
+                                variant={favorites.includes(el.sockId) ? "outline-danger" : "outline-secondary"}
                                 size="sm"
                                 onClick={() => handleAddToFavorites(el.sockId)}
                                 disabled={favorites.includes(el.sockId)}
-                                className="p-1"
                               >
-                                <Heart size={16} />
-                                <span className="d-none d-md-inline ms-1">
-                                  {favorites.includes(el.sockId)
-                                    ? 'В избранном'
-                                    : 'В избранное'}
-                                </span>
+                                <Heart />{' '}
+                                {favorites.includes(el.sockId)
+                                  ? 'В избранном'
+                                  : 'В избранное'}
                               </Button>
                             </div>
                           </Col>
@@ -195,10 +194,8 @@ export default function CartPage() {
                 ))}
               </ListGroup>
             </Col>
-
-            {/* Блок итогов */}
-            <Col xs={12} md={4} className="mt-4 mt-md-0">
-              <Card className="sticky-top" style={{ top: '20px' }}>
+            <Col md={4}>
+              <Card>
                 <Card.Header>Итого</Card.Header>
                 <Card.Body>
                   <ListGroup variant="flush">
@@ -207,7 +204,7 @@ export default function CartPage() {
                         key={item.id}
                         className="d-flex justify-content-between"
                       >
-                        <span className="text-truncate" style={{ maxWidth: '60%' }}>
+                        <span>
                           {item.Sock.name} x {item.quantity}
                         </span>
                         <span>{item.subTotal} ₽</span>
