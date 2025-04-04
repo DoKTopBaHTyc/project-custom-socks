@@ -5,6 +5,7 @@ import { useColorContext } from '../../context/ColorContext';
 import { usePatternContext } from '../../context/PatternContext';
 import ColorPicker from './ColorPicker';
 import PatternPicker from './PatternPicker';
+import { useImageContext } from '../../context/ImageContext';
 
 export default function GenaRightSide() {
   const [step, setStep] = useState(1);
@@ -16,6 +17,7 @@ export default function GenaRightSide() {
   // });
   const { selectedColor, selectColor } = useColorContext();
   const { selectedPattern, selectPattern } = usePatternContext();
+  const { setImageUrl } = useImageContext();
 
   const onClickHandler = () => {
     localStorage.removeItem('image');
@@ -29,6 +31,7 @@ export default function GenaRightSide() {
 
   const deleteImageHandler = () => {
     localStorage.removeItem('image');
+    setImageUrl(null)
     // setStorageFill((prev) => ({ ...prev, image: false }));
   };
 

@@ -26,11 +26,11 @@ export default function ImagesContainer() {
     setShowModal(false);
   };
 
-  useEffect(() => {
-    if (imageUrl) {
-      setStorageFill((prevStorage) => ({ ...prevStorage, image: true }));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (imageUrl) {
+  //     setStorageFill((prevStorage) => ({ ...prevStorage, image: true }));
+  //   }
+  // }, []);
 
   // useEffect(() => {
   //   if (showModal === false) {

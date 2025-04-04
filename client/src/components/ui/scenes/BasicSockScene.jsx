@@ -77,6 +77,7 @@ function Sock() {
 
   // Загрузка изображения
   useEffect(() => {
+    console.log(imageUrl)
     // Очищаем текстуру, если изображение не выбрано
     if (!imageUrl) {
       setImageTexture(null);
