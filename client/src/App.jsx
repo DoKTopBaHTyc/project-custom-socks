@@ -126,6 +126,7 @@ function App() {
 
           {/* Редирект с неизвестных маршрутов */}
           <Route path="/errorPage" element={<DefaultErrorPage />} />
+
           <Route path="*" element={<Navigate to="/errorPage" />} />
         </Routes>
       </Layout>

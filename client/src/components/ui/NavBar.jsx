@@ -2,20 +2,32 @@ import React from 'react';
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router';
 import styles from './NavBar.module.css';
+import logo from './Nanoga.png'; // Используйте относительный путь
 
 export default function NavBar({ user, logoutHandler }) {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className={styles.navbar}>
       <Container>
-        <Navbar.Brand as={Link} to="/" className={styles.brand}>
-          Кастомные носки
+        {/* Логотип слева отдельно от текста */}
+        <Navbar.Brand as={Link} to="/" className="me-0">
+          <img 
+            src={logo} 
+            alt="Логотип SockCraft" 
+            className={styles.logo}
+            width={119}
+            height={39}
+          />
         </Navbar.Brand>
-        <Navbar.Toggle 
-          aria-controls="basic-navbar-nav" 
-          className={styles.toggle}
-        >
-          <span className={styles.toggleIcon}></span>
-        </Navbar.Toggle>
+        
+        {/* Текст "Кастомные носки" как отдельная ссылка */}
+        <Nav className="me-auto">
+          <Nav.Link as={Link} to="/" className={styles.navLink}>
+            Главная
+          </Nav.Link>
+        </Nav>
+
+        <Navbar.Toggle aria-controls="basic-navbar-nav" className={styles.toggle} />
+
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             {user && (
@@ -67,3 +79,4 @@ export default function NavBar({ user, logoutHandler }) {
     </Navbar>
   );
 }
+

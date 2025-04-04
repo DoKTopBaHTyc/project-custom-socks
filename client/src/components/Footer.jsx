@@ -26,8 +26,8 @@ const Footer = () => {
         <div className={styles.footerSection}>
           <h3 className={styles.footerTitle}>Режим работы</h3>
           <p className={styles.footerText}>
-            Пн-Пт: 10:00 - 11:00<br/>
-            Сб-Вс: 11:00 - 12:00
+            Пн-Пт: 10:00 - 20:00<br/>
+            Сб-Вс: 11:00 - 19:00
           </p>
         </div>
       </div>
