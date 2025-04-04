@@ -33,7 +33,7 @@ export default function FavoritesPage({ user }) {
         <div key={el.id} className={styles.favoriteCard}>
           <img
             src={
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhhpxZZsBlonSvdpCjOrF1DzFe2TtLVLA6Yw&s'
+              el.desingURL
             }
             alt={el.name}
             className={styles.productImage}
