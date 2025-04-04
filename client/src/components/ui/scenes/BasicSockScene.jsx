@@ -13,7 +13,7 @@ import {
   createVertexShader,
   loadTexture,
 } from '../../utils/imageShaderUtils';
-import ImageControlsPanel from '../ImageControlsPanel';
+import ImageControlsPanel from '../imageControlsPanel';
 
 /**
  * Компонент, который отображает 3D модель носка с настройками текстур и изображения
