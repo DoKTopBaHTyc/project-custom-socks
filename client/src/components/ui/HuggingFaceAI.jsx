@@ -30,7 +30,7 @@ function HuggingFaceAI({ setImageUrl }) {
     try {
       const translatedText = await translateWithMyMemory(prompt, 'ru|en');
       console.log('Original text:', prompt, '--||-- translated text:', translatedText);
-      const newImage = 'https://cdn.worldvectorlogo.com/logos/random.svg'; // удалить в проде
+      const newImage = '/data/patterns/img2.png'; // удалить в проде
       // раскомментить в проде
       // const response = await axios.post(
       //   `https://api-inference.huggingface.co/models/${MODEL_ID}`,

@@ -17,9 +17,6 @@ export const ColorContextProvider = ({ children }) => {
 
   const loading = colors === null || !Array.isArray(colors) || colors.length === 0
 
-  // const displayColors =
-  //   Array.isArray(colors) && colors.length > 0 ? colors : <p>Загрузка цветов...</p>;
-
   return (
     <ColorContext.Provider
       value={{
