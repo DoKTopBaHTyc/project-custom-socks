@@ -10,4 +10,6 @@ favoriteRouter.route('/:id').delete(verifyAccessToken, FavoriteController.delete
 
 favoriteRouter.route('/cart/:id').post(verifyAccessToken, FavoriteController.addToCart)
 
+
+
 module.exports = favoriteRouter;

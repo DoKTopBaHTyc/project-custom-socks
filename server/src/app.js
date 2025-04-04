@@ -19,6 +19,7 @@ app.use('/api/tokens', tokensRouter);
 app.use('/api/gensock', generateRouter);
 
 app.use('/api/favorites', favoriteRouter);
+
 app.use('/api/cart', cartRouter);
 app.use('/api/gensock', gensockRouter);
 
