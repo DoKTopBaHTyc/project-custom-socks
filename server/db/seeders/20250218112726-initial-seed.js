@@ -44,6 +44,27 @@ module.exports = {
     // ];
     // await queryInterface.bulkInsert('Colors', colors);
 
+    const images = [
+      {
+        url: '/patterns/shrek.png',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        url: '/patterns/img.png',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        url: '/patterns/img2.png',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      
+
+    ];
+    await queryInterface.bulkInsert('Images', images);
+
     // Добавляем паттерны
     const patterns = [
       {
@@ -63,6 +84,11 @@ module.exports = {
       },
       {
         url: 'patterns/4.png',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        url: 'patterns/5.png',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

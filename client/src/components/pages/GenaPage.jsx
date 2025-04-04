@@ -7,6 +7,7 @@ import { ColorContextProvider, useColorContext } from '../../context/ColorContex
 import { PatternContextProvider, usePatternContext } from '../../context/PatternContext';
 import PatternPicker from '../ui/PatternPicker';
 import BasicSockScene from '../ui/scenes/BasicSockScene';
+import { ImageContextProvider } from '../../context/ImageContext';
 
 function GenaPageContent() {
   const { selectedColor } = useColorContext();
@@ -39,12 +40,14 @@ export default function GenaPage({ user }) {
   if (!user) return <Navigate to="/login" />;
   return (
     <div>
-      <ColorContextProvider>
-        <PatternContextProvider>
-          <GenaRightSide />
-          <GenaPageContent />
-        </PatternContextProvider>
-      </ColorContextProvider>
+      <ImageContextProvider>
+        <ColorContextProvider>
+          <PatternContextProvider>
+            <GenaRightSide />
+            <GenaPageContent />
+          </PatternContextProvider>
+        </ColorContextProvider>
+      </ImageContextProvider>
     </div>
   );
 }
