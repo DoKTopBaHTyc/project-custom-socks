@@ -1,4 +1,5 @@
-const { Sock, User, Like, Cart } = require('../../db/models');
+const { where } = require('sequelize');
+const { Sock, User, Like, Cart, Order } = require('../../db/models');
 
 class FavoriteService {
   static async allUsers() {
@@ -23,7 +24,10 @@ class FavoriteService {
 
   static async delete(userId, id) {
     try {
-      const like = await Like.findOne({
+ 
+      const deletedCount = await Like.findOne({
+     
+ 
         where: { userId, sockId: id },
       });
       if (!like) {
@@ -36,19 +40,40 @@ class FavoriteService {
     }
   }
 
-  static async addInCart({ userId, sockId }) {
+  static async addInCart(userId, sockId) {
     const findSock = await Sock.findByPk(sockId);
-    if (!findSock) {
-      throw new Error('Носок не найден');
-    }
 
-    const item = await Cart.findOrCreate({
-      quantity: 1,
-      subTotal: findSock.price,
-      userId,
-      sockId,
-      orderId: 1,
+    const userOrders = await Order.findAll({
+      where: { userId },
     });
+    let orderId = userOrders[userOrders.length - 1].id;
+    console.log(orderId, '2');
+
+    if (userOrders[userOrders.length - 1].isOrdered) {
+      if (!findSock) {
+        throw new Error('Носок не найден');
+      }
+
+      const newOrder = await Order.create({
+        userId,
+        isOrdered: false,
+      });
+      orderId = newOrder.id;
+      console.log(orderId, '3');
+    }
+    
+    const [item, created ] = await Cart.findOrCreate({
+      where: { sockId, userId },
+      defaults: {
+        quantity: 1,
+        subTotal: findSock.price,
+        userId,
+        sockId,
+        orderId,
+      },
+    });
+    
+
     return item;
   }
 }
