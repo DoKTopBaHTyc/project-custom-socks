@@ -1,0 +1,109 @@
+.navbar {
+    background-color: #2d3436 !important;
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff !important;
+    transition: color 0.3s ease;
+  }
+  
+  .brand:hover {
+    color: #0984e3 !important;
+  }
+  
+  .navLink {
+    color: #dfe6e9 !important;
+    margin: 0 10px;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+  
+  .navLink:hover {
+    color: #0984e3 !important;
+  }
+  
+  .navLink:after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #0984e3;
+    transition: width 0.3s ease;
+  }
+  
+  .navLink:hover:after {
+    width: 100%;
+  }
+  
+  .outlineButton {
+    background: transparent;
+    border: 2px solid #dfe6e9;
+    color: #dfe6e9;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+  }
+  
+  .outlineButton:hover {
+    background: rgba(223, 230, 233, 0.1);
+    border-color: #0984e3;
+    color: #0984e3;
+  }
+  
+  .solidButton {
+    background: #0984e3;
+    border: 2px solid #0984e3;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+  }
+  
+  .solidButton:hover {
+    background: #0767b1;
+    border-color: #0767b1;
+  }
+  
+  .userGreeting {
+    color: #dfe6e9;
+    margin-right: 15px;
+    font-size: 1.1rem;
+    align-self: center;
+  }
+  
+  .toggle {
+    border-color: rgba(223, 230, 233, 0.5);
+  }
+  
+  .toggleIcon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(223, 230, 233, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+  
+  @media (max-width: 992px) {
+    .navLink {
+      margin: 10px 0;
+      padding: 10px 0;
+    }
+    
+    .outlineButton, 
+    .solidButton {
+      margin: 10px 0;
+      width: 100%;
+    }
+    
+    .userGreeting {
+      margin: 15px 0;
+      text-align: center;
+    }
+  }  

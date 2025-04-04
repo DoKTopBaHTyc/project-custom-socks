@@ -5,7 +5,6 @@ class FavoriteController {
     try {
       const { id } = res.locals.user;
       const { likes } = await FavoriteService.allFavoriteSocks(Number(id));
-      // console.log(likes);
 
       res.status(200).json(likes);
     } catch (error) {
@@ -44,7 +43,7 @@ class FavoriteController {
   static async addToCart(req, res) {
     try {
       const userId = Number(res.locals.user.id);
-      const sockId = Number(res.params.id);
+      const sockId = Number(req.params.id);
       const resp = await FavoriteService.addInCart(userId, sockId);
       res.status(200).json(resp);
     } catch (error) {
