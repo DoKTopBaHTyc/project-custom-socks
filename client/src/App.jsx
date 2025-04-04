@@ -10,6 +10,7 @@ import GenaPage from './components/pages/GenaPage';
 import LoginPage from './components/pages/LoginPage';
 import MainPage from './components/pages/MainPage';
 import SignUpPage from './components/pages/SignUpPage';
+import DefaultErrorPage from './components/pages/DefaultErrorPage';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -71,11 +72,9 @@ function App() {
     axiosInstance
       .get('/tokens/refresh')
       .then((res) => {
-        
         setUser(res.data.user);
         localStorage.setItem('user', JSON.stringify(res.data.user));
         setAccessToken(res.data.accessToken);
-        
       })
       .catch(() => {
         setUser(null);
@@ -121,8 +120,11 @@ function App() {
             element={user ? <FavoritesPage user={user} /> : <Navigate to="/login" />}
           />
           <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" />} />
+
           {/* Редирект с неизвестных маршрутов */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="/errorPage" element={<DefaultErrorPage />} />
+
+          <Route path="*" element={<Navigate to="/errorPage" />} />
         </Routes>
       </Layout>
     </BrowserRouter>

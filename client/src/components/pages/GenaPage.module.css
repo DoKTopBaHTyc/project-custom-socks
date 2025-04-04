@@ -1,0 +1,60 @@
+.buttonGroup {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+  }
+  
+  .outlineButton {
+    background: transparent;
+    border: 2px solid;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .outlineButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Цветовые варианты */
+  .outlinePrimary {
+    border-color: #0984e3;
+    color: #0984e3;
+  }
+  
+  .outlinePrimary:hover {
+    background-color: rgba(9, 132, 227, 0.1);
+  }
+  
+  .outlineSecondary {
+    border-color: #6c757d;
+    color: #6c757d;
+  }
+  
+  .outlineSecondary:hover {
+    background-color: rgba(108, 117, 125, 0.1);
+  }
+  
+  .outlineSuccess {
+    border-color: #28a745;
+    color: #28a745;
+  }
+  
+  .outlineSuccess:hover {
+    background-color: rgba(40, 167, 69, 0.1);
+  }
+  
+  .outlineDanger {
+    border-color: #dc3545;
+    color: #dc3545;
+  }
+  
+  .outlineDanger:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+  }

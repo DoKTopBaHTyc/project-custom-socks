@@ -31,7 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       colorId: DataTypes.INTEGER,
       patternId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
-      desingURL: DataTypes.STRING,
+      desingURL: {
+        type: DataTypes.TEXT('long'), // Изменено для хранения больших base64 изображений
+        allowNull: true // Разрешаем null, если изображение не загружено
+      },
     },
     {
       sequelize,
