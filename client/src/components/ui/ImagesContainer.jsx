@@ -4,7 +4,7 @@ import HuggingFaceAI from './HuggingFaceAI';
 import ImageUploader from './ImageUploader';
 import ImageChooseList from './ImageChooseList';
 
-export default function ImagesContainer({ setStorageFill }) {
+export default function ImagesContainer() {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
@@ -18,7 +18,7 @@ export default function ImagesContainer({ setStorageFill }) {
   const onClickHandler = () => {
     if (imageUrl) {
       localStorage.setItem('image', imageUrl);
-      setStorageFill((prevStorage) => ({ ...prevStorage, image: true }));
+      // setStorageFill((prevStorage) => ({ ...prevStorage, image: true }));
     }
     setShowModal(false);
   };
