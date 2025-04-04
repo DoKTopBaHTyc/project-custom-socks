@@ -1,4 +1,3 @@
-import emailjs from 'emailjs-com';
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
@@ -10,21 +9,33 @@ import {
   ListGroup,
   ListGroupItem,
   Row,
+  Spinner
 } from 'react-bootstrap';
 import { Dash, Heart, Plus, Trash } from 'react-bootstrap-icons';
 import axiosInstance from '../../api/axiosInstance';
+import emailService from '../../api/emailService';
 
 export default function CartPage() {
   const [cartItems, setCartItems] = useState([]);
   const [orderStatus, setOrderStatus] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    emailjs.init('DSNHD4PAdS860fPxU'); // Ваш User ID
-  }, []);
+    const fetchData = async () => {
+      try {
+        const [cartRes, favoritesRes] = await Promise.all([
+          axiosInstance.get('/cart'),
+          axiosInstance.get('/favorites')
+        ]);
+        setCartItems(cartRes.data);
+        setFavorites(favoritesRes.data.map((sock) => sock.id));
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  useEffect(() => {
-    axiosInstance.get('/cart').then((res) => setCartItems(res.data));
+    fetchData();
   }, []);
 
   async function quantityHandler(cartItemId, quantity) {
@@ -40,13 +51,13 @@ export default function CartPage() {
 
   const incrementQuantity = async (cartItemId, quantity) => {
     const newQuantity = quantity + 1;
-    quantityHandler(cartItemId, newQuantity);
+    await quantityHandler(cartItemId, newQuantity);
   };
 
   const decrementQuantity = async (cartItemId, quantity) => {
     if (quantity > 1) {
       const newQuantity = quantity - 1;
-      quantityHandler(cartItemId, newQuantity);
+      await quantityHandler(cartItemId, newQuantity);
     }
   };
 
@@ -55,45 +66,14 @@ export default function CartPage() {
     setCartItems(cartItems.filter((item) => item.id !== id));
   };
 
-  const sendOrderConfirmation = (email, orderDetails) => {
-    // Форматируем данные для шаблона
-    const templateParams = {
-      to_email: email,
-      order_id: `ORDER-${Date.now()}`,
-      orders: orderDetails.items.map((item) => ({
-        image_url: item.Sock.desingURL || 'https://via.placeholder.com/150',
-        name: item.Sock.name,
-        units: item.quantity,
-        price: item.Sock.price.toFixed(2) * item.quantity, // Число без валюты (шаблон сам добавит $)
-      })),
-      cost: {
-        shipping: '0.00', // Обязательно в формате "0.00"
-        tax: '0.00', // Обязательно в формате "0.00"
-        total: orderDetails.total.toFixed(2), // Форматируем с двумя знаками после запятой
-      },
-      email: email,
-    };
-
-    console.log('Параметры для письма:', templateParams);
-
-    return emailjs.send('service_27vo5ls', 'template_3v42iry', templateParams);
-  };
-
   const handleOrder = async () => {
     try {
-      // 1. Подтверждаем заказ на сервере
       await axiosInstance.patch('/cart');
-
-      // 2. Подготовка данных
       const orderData = {
         items: cartItems,
         total: calculateTotal(),
       };
-
-      // 3. Отправка письма
-      await sendOrderConfirmation('denisoid93@gmail.com', orderData);
-
-      // 4. Обновление состояния
+      await emailService.sendOrderConfirmation('denisoid93@gmail.com', orderData);
       setCartItems(
         cartItems.map((item) => ({
           ...item,
@@ -103,10 +83,9 @@ export default function CartPage() {
       setOrderStatus('success');
     } catch (error) {
       console.error('Ошибка оформления:', error);
-      // Здесь можно добавить обработку ошибки для пользователя
     }
-    
   };
+
   const handleAddToFavorites = async (sockId) => {
     await axiosInstance.post(`/cart/${sockId}`);
     setFavorites([...favorites, sockId]);
@@ -116,14 +95,23 @@ export default function CartPage() {
     return cartItems.reduce((total, item) => total + item.Sock.price * item.quantity, 0);
   };
 
+  if (isLoading) {
+    return (
+      <Container className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
+        <Spinner animation="border" role="status" style={{ width: '4rem', height: '4rem' }}>
+          <span className="visually-hidden">Загрузка...</span>
+        </Spinner>
+      </Container>
+    );
+  }
+
   return (
     <Container className="my-5">
       <h2 className="mb-4">Ваша корзина</h2>
 
-      {cartItems.length === 0 && !orderStatus && (
+      {cartItems.length === 0 && !orderStatus ? (
         <Alert variant="info">Ваша корзина пуста</Alert>
-      )}
-      {orderStatus === 'success' ? (
+      ) : orderStatus === 'success' ? (
         <Alert variant="success" className="text-center">
           <Alert.Heading>Заказ успешно оформлен!</Alert.Heading>
           <p>Спасибо за ваш заказ. Мы свяжемся с вами в ближайшее время.</p>
@@ -138,22 +126,23 @@ export default function CartPage() {
                     <Card>
                       <Card.Body>
                         <Row className="align-items-center">
-                          <Col md={3}>
+                          <Col xs={4} md={3}>
                             <Card.Img
                               variant="top"
                               src={el.Sock.desingURL}
                               alt={el.Sock.name}
                               className="img-fluid"
+                              style={{ maxHeight: '100px', objectFit: 'contain' }}
                             />
                           </Col>
-                          <Col md={6}>
-                            <Card.Title>{el.Sock.name}</Card.Title>
+                          <Col xs={8} md={5}>
+                            <Card.Title className="h6">{el.Sock.name}</Card.Title>
                             <Card.Text>
-                              <strong>Стоимость:</strong> {el.Sock.price} ₽
+                              <strong>Цена:</strong> {el.Sock.price} ₽
                             </Card.Text>
                           </Col>
-                          <Col md={3}>
-                            <div className="d-flex align-items-center mb-2">
+                          <Col xs={12} md={4} className="mt-2 mt-md-0">
+                            <div className="d-flex align-items-center mb-2 justify-content-center justify-content-md-start">
                               <Button
                                 variant="outline-secondary"
                                 size="sm"
@@ -186,7 +175,7 @@ export default function CartPage() {
                                 <Trash /> Удалить
                               </Button>
                               <Button
-                                variant="outline-secondary"
+                                variant={favorites.includes(el.sockId) ? "outline-danger" : "outline-secondary"}
                                 size="sm"
                                 onClick={() => handleAddToFavorites(el.sockId)}
                                 disabled={favorites.includes(el.sockId)}
@@ -194,7 +183,7 @@ export default function CartPage() {
                                 <Heart />{' '}
                                 {favorites.includes(el.sockId)
                                   ? 'В избранном'
-                                  : 'Добавить в избранное'}
+                                  : 'В избранное'}
                               </Button>
                             </div>
                           </Col>

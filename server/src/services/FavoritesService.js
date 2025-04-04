@@ -24,10 +24,16 @@ class FavoriteService {
 
   static async delete(userId, id) {
     try {
+ 
       const deletedCount = await Like.findOne({
+     
+ 
         where: { userId, sockId: id },
       });
-      return await deletedCount.destroy();
+      if (!like) {
+        throw new Error('Запись не найдена');
+      }
+      return await like.destroy();
     } catch (error) {
       console.error('Ошибка при удалении из избранного:', error);
       throw error;
