@@ -4,6 +4,7 @@ class SockController {
   static async create(req, res) {
     try {
       const { name, price, colorId, patternId, userId, designUrl } = req.body;
+      console.log(designUrl);
       const sock = await SockService.create(
         name,
         Number(price),
