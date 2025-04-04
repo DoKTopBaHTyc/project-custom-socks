@@ -22,6 +22,16 @@ class ColorController {
       return res.status(500).json({ message: 'Error retrieving color', error });
     }
   }
+
+  static async getByHex(req, res) {
+    try {
+      const {hex} = req.params
+      const color = await ColorService.getByHex(hex)
+      return res.status(200).json(color)
+    } catch (error) {
+      return res.status(500).json({ message: 'Ошибка получения цвета', error });
+    }
+  }
 }
 
 module.exports = ColorController;

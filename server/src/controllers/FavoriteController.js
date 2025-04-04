@@ -50,6 +50,18 @@ class FavoriteController {
       res.status(400).json(error.message);
     }
   }
+
+  static async create(req, res) {
+    try {
+      const userId = res.locals.user.id;
+      const sockId = Number(req.params.id);
+      const favorite = await FavoriteService.create(userId, sockId);
+      res.status(201).json(favorite);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Ошибка добавления в избранное' });
+    }
+  }
 }
 
 module.exports = FavoriteController;
