@@ -18,7 +18,7 @@ import { useImageContext } from '../../context/ImageContext';
  * @param {Object} props.position - Объект для позиционирования панели (CSS-стили)
  */
 
-const ImageControlsPanel = ({ 
+const imageControlsPanel = ({ 
   imageScale, setImageScale,
   imageOffsetX, setImageOffsetX, 
   imageOffsetY, setImageOffsetY,
@@ -163,4 +163,4 @@ const ImageControlsPanel = ({
   );
 };
 
-export default ImageControlsPanel;
+export default imageControlsPanel;

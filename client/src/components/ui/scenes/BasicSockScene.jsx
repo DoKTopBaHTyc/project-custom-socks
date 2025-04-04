@@ -13,6 +13,7 @@ import {
   createVertexShader,
   loadTexture,
 } from '../../utils/imageShaderUtils';
+import imageControlsPanel from '../ImageControlsPanel';
 
 function Sock({
   imageScale,
@@ -162,20 +163,20 @@ export default function BasicSockScene() {
 
   return (
     <div style={{ width: '60%', height: '500px', position: 'relative' }}>
-      <ImageControlsPanel
-        imageScale={imageScale}
-        setImageScale={setImageScale}
-        imageOffsetX={imageOffsetX}
-        setImageOffsetX={setImageOffsetX}
-        imageOffsetY={imageOffsetY}
-        setImageOffsetY={setImageOffsetY}
-        imageRotation={imageRotation}
-        setImageRotation={setImageRotation}
-        imageMixStrength={imageMixStrength}
-        setImageMixStrength={setImageMixStrength}
-        visible={showControls}
-        position={{ left: '600px', top: '10px' }}
-      />
+      {imageControlsPanel({
+        imageScale,
+        setImageScale,
+        imageOffsetX,
+        setImageOffsetX,
+        imageOffsetY,
+        setImageOffsetY,
+        imageRotation,
+        setImageRotation,
+        imageMixStrength,
+        setImageMixStrength,
+        visible: showControls,
+        position: { left: '600px', top: '10px' },
+      })}
 
       <Canvas
         camera={{

@@ -7,7 +7,7 @@ const SockController = require('../controllers/SockController');
 const generateRouter = express.Router();
 
 generateRouter.route('/colors').get(ColorController.getAllColors);
-generateRouter.route('/colors:id').get(ColorController.getOneColor);
+generateRouter.route('/colors/:id').get(ColorController.getOneColor);
 generateRouter.route('/colors/:hex').get(ColorController.getByHex)
 
 generateRouter.route('/patterns').get(PatternController.getAllPatterns);
