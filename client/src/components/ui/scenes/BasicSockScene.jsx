@@ -7,26 +7,33 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { useColorContext } from '../../../context/ColorContext';
 import { usePatternContext } from '../../../context/PatternContext';
 import { useImageContext } from '../../../context/ImageContext';
+import { 
+  createVertexShader, 
+  createFragmentShader, 
+  createUniforms, 
+  loadTexture 
+} from '../../utils/imageShaderUtils';
+import ImageControlsPanel from '../ImageControlsPanel';
+import useImageSettings from '../../hooks/useImageSettings';
 
-function Sock() {
+/**
+ * Компонент, который отображает 3D модель носка с настройками текстур и изображения
+ */
+function Sock({
+  imageScale,
+  imageOffsetX,
+  imageOffsetY,
+  imageRotation,
+  imageMixStrength
+}) {
   const { selectedColor } = useColorContext();
   const { selectedPattern } = usePatternContext();
-  const { imageUrl } = useImageContext(); // Используем контекст изображения
+  const { imageUrl } = useImageContext();
   
   const [sockModel, setSockModel] = useState(null);
   const [patternTexture, setPatternTexture] = useState(null);
   const [imageTexture, setImageTexture] = useState(null);
-
-  // Отладочная информация для проверки состояния текстур
-  useEffect(() => {
-    console.log("Текущее состояние:");
-    console.log("- Цвет:", selectedColor);
-    console.log("- Паттерн:", selectedPattern?.url);
-    console.log("- Изображение:", imageUrl);
-    console.log("- Текстура паттерна загружена:", patternTexture !== null);
-    console.log("- Текстура изображения загружена:", imageTexture !== null);
-  }, [selectedColor, selectedPattern, imageUrl, patternTexture, imageTexture]);
-
+  
   // Загрузка OBJ модели
   useEffect(() => {
     const loader = new OBJLoader();
@@ -47,54 +54,39 @@ function Sock() {
 
   // Загрузка паттернов
   useEffect(() => {
-    // Очищаем текстуру, если паттерн не выбран
     if (!selectedPattern?.url) {
       setPatternTexture(null);
       return;
     }
 
-    console.log("Загрузка текстуры паттерна:", `data/${selectedPattern.url}`);
-    const textureLoader = new THREE.TextureLoader();
-    textureLoader.load(
+    loadTexture(
       `data/${selectedPattern.url}`,
       (loadedTexture) => {
         console.log("Текстура паттерна загружена успешно");
-        loadedTexture.wrapS = THREE.RepeatWrapping;
-        loadedTexture.wrapT = THREE.RepeatWrapping;
-        loadedTexture.magFilter = THREE.LinearFilter;
-        loadedTexture.minFilter = THREE.LinearMipmapLinearFilter;
-        
         setPatternTexture(loadedTexture);
       },
       (xhr) => {
-        console.log((xhr.loaded / xhr.total * 100) + '% текстуры паттерна загружено');
+        if (xhr.lengthComputable) {
+          console.log((xhr.loaded / xhr.total * 100) + '% текстуры паттерна загружено');
+        }
       },
       (error) => {
         console.error('Ошибка загрузки текстуры паттерна:', error);
-      },
+      }
     );
   }, [selectedPattern]);
 
   // Загрузка изображения
   useEffect(() => {
-    console.log(imageUrl)
-    // Очищаем текстуру, если изображение не выбрано
     if (!imageUrl) {
       setImageTexture(null);
       return;
     }
 
-    console.log("Загрузка текстуры изображения:", imageUrl);
-    const textureLoader = new THREE.TextureLoader();
-    textureLoader.load(
+    loadTexture(
       imageUrl,
       (loadedTexture) => {
         console.log("Текстура изображения загружена успешно");
-        loadedTexture.wrapS = THREE.RepeatWrapping;
-        loadedTexture.wrapT = THREE.RepeatWrapping;
-        loadedTexture.magFilter = THREE.LinearFilter;
-        loadedTexture.minFilter = THREE.LinearMipmapLinearFilter;
-        
         setImageTexture(loadedTexture);
       },
       (xhr) => {
@@ -104,7 +96,7 @@ function Sock() {
       },
       (error) => {
         console.error('Ошибка загрузки изображения:', error);
-      },
+      }
     );
   }, [imageUrl]);
 
@@ -112,108 +104,85 @@ function Sock() {
   useEffect(() => {
     if (!sockModel) return;
     
-    console.log("Обновление материала модели");
-    console.log("- Использует цвет:", selectedColor);
-    console.log("- Использует паттерн:", patternTexture !== null);
-    console.log("- Использует изображение:", imageTexture !== null);
-
     sockModel.traverse((child) => {
       if (child.isMesh) {
         // Создаем параметры для шейдера
-        const uniforms = {
-          baseColor: { value: new THREE.Color(selectedColor || "#ffffff") },
-          patternTexture: { value: patternTexture },
-          hasPatternTexture: { value: patternTexture !== null ? 1.0 : 0.0 },
-          imageTexture: { value: imageTexture },
-          hasImageTexture: { value: imageTexture !== null ? 1.0 : 0.0 },
-          imageMixStrength: { value: 0.8 },
-          ambientLightIntensity: { value: 0.8 },
-          lightIntensity: { value: 0.15 },
-        };
+        const uniforms = createUniforms({
+          selectedColor,
+          patternTexture,
+          imageTexture,
+          imageScale,
+          imageOffsetX,
+          imageOffsetY,
+          imageRotation,
+          imageMixStrength
+        });
 
         // Создаем новый материал с шейдером
         child.material = new THREE.ShaderMaterial({
           uniforms: uniforms,
-          vertexShader: `
-            varying vec2 vUv;
-            varying vec3 vNormal;
-            
-            void main() {
-              vUv = uv;
-              vNormal = normalMatrix * normal;
-              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-            }
-          `,
-          fragmentShader: `
-            uniform vec3 baseColor;
-            uniform sampler2D patternTexture;
-            uniform float hasPatternTexture;
-            uniform sampler2D imageTexture;
-            uniform float hasImageTexture;
-            uniform float imageMixStrength;
-            
-            uniform float ambientLightIntensity;
-            uniform float lightIntensity;
-            
-            varying vec2 vUv;
-            varying vec3 vNormal;
-            
-            void main() {
-              // Начинаем с базового цвета
-              vec3 finalColor = baseColor;
-              
-              // Если есть текстура паттерна, применяем её
-              if (hasPatternTexture > 0.5) {
-                vec4 patternColor = texture2D(patternTexture, vUv);
-                
-                // Применяем паттерн только там, где он не прозрачный
-                if (patternColor.a > 0.1) {
-                  finalColor = mix(finalColor, patternColor.rgb, patternColor.a);
-                }
-              }
-              
-              // Если есть текстура изображения, применяем её поверх
-              if (hasImageTexture > 0.5) {
-                vec4 imgColor = texture2D(imageTexture, vUv);
-                
-                // Применяем изображение там, где оно не прозрачное
-                if (imgColor.a > 0.1) {
-                  float mixFactor = imgColor.a * imageMixStrength;
-                  finalColor = mix(finalColor, imgColor.rgb, mixFactor);
-                }
-              }
-              
-              // Применяем освещение
-              vec3 normal = normalize(vNormal);
-              float lighting = max(dot(normal, vec3(0.5, 0.5, 1.0)), 0.0) * lightIntensity;
-              float totalLight = ambientLightIntensity + lighting;
-              
-              // Итоговый цвет пикселя
-              gl_FragColor = vec4(finalColor * totalLight, 1.0);
-            }
-          `,
+          vertexShader: createVertexShader(),
+          fragmentShader: createFragmentShader(),
           transparent: true,
           blending: THREE.NormalBlending,
         });
       }
     });
-  }, [sockModel, selectedColor, patternTexture, imageTexture]);
+  }, [
+    sockModel, 
+    selectedColor, 
+    patternTexture, 
+    imageTexture, 
+    imageScale, 
+    imageOffsetX, 
+    imageOffsetY, 
+    imageRotation, 
+    imageMixStrength
+  ]);
 
   return sockModel ? <primitive object={sockModel} /> : null;
 }
 
+/**
+ * Основной компонент сцены с 3D моделью носка
+ */
 export default function BasicSockScene() {
+  // Используем хук для управления настройками изображения
+  const {
+    imageScale, setImageScale,
+    imageOffsetX, setImageOffsetX,
+    imageOffsetY, setImageOffsetY,
+    imageRotation, setImageRotation,
+    imageMixStrength, setImageMixStrength,
+  } = useImageSettings();
+  
+  // Проверяем, есть ли изображение для отображения контролов
+  const { imageUrl } = useImageContext();
+  const showControls = !!imageUrl;
+
+
+
+
+
   return (
-    <div
-      style={{
-        width: '70%',
-        height: '400px',
-        margin: '0 auto',
-        borderRadius: '0.7rem',
-        padding: '4px',
-        background: 'linear-gradient(135deg,rgb(240, 240, 240),rgb(226, 226, 226))'
-      }}
-    >
+    <div style={{ width: '60%', height: '500px', position: 'relative' }}>
+      {/* Панель управления изображением */}
+      <ImageControlsPanel 
+        imageScale={imageScale}
+        setImageScale={setImageScale}
+        imageOffsetX={imageOffsetX}
+        setImageOffsetX={setImageOffsetX}
+        imageOffsetY={imageOffsetY}
+        setImageOffsetY={setImageOffsetY}
+        imageRotation={imageRotation}
+        setImageRotation={setImageRotation}
+        imageMixStrength={imageMixStrength}
+        setImageMixStrength={setImageMixStrength}
+        visible={showControls}
+        position={{ left: '600px', top: '10px' }}
+      />
+      
+      {/* Canvas с 3D моделью */}
       <Canvas
         camera={{
           position: [0, 0.8, 0.7],
@@ -232,7 +201,13 @@ export default function BasicSockScene() {
         <spotLight position={[0, -5, 0]} angle={0.5} intensity={0.5} distance={20} />
 
         <Suspense fallback={null}>
-          <Sock />
+          <Sock 
+            imageScale={imageScale}
+            imageOffsetX={imageOffsetX}
+            imageOffsetY={imageOffsetY}
+            imageRotation={imageRotation}
+            imageMixStrength={imageMixStrength}
+          />
         </Suspense>
 
         <OrbitControls
@@ -241,9 +216,9 @@ export default function BasicSockScene() {
           zoomSpeed={1.2}
           panSpeed={0.5}
           rotateSpeed={0.8}
-          target={[0, 0.15, 0]} // Смещаем центр вращения еще ниже
-          minDistance={0.3} // Минимальное расстояние зума очень маленькое
-          maxDistance={10} // Максимальное расстояние зума
+          target={[0, 0.1, 0]}
+          minDistance={0.3}
+          maxDistance={10}
         />
       </Canvas>
     </div>
