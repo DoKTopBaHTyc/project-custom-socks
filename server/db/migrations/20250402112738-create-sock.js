@@ -53,6 +53,7 @@ module.exports = {
       // },
       desingURL: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
