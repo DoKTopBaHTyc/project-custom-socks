@@ -5,12 +5,12 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import axiosInstance, { setAccessToken } from './api/axiosInstance';
 import Layout from './components/Layout';
 import CartPage from './components/pages/CartPage';
+import DefaultErrorPage from './components/pages/DefaultErrorPage';
 import FavoritesPage from './components/pages/FavoritesPage';
 import GenaPage from './components/pages/GenaPage';
 import LoginPage from './components/pages/LoginPage';
 import MainPage from './components/pages/MainPage';
 import SignUpPage from './components/pages/SignUpPage';
-import DefaultErrorPage from './components/pages/DefaultErrorPage';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -119,7 +119,10 @@ function App() {
             path="/favorites"
             element={user ? <FavoritesPage user={user} /> : <Navigate to="/login" />}
           />
-          <Route path="/cart" element={user ? <CartPage /> : <Navigate to="/login" />} />
+          <Route
+            path="/cart"
+            element={user ? <CartPage user={user} /> : <Navigate to="/login" />}
+          />
 
           {/* Редирект с неизвестных маршрутов */}
           <Route path="/errorPage" element={<DefaultErrorPage />} />
