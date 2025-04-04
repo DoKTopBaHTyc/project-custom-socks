@@ -85,7 +85,7 @@ export default function GenaRightSide() {
                 <span>
                   <ColorPicker />
                 </span>
-                {selectedColor && <div>Выбранный цвет: {selectedColor}</div>}
+                {/* {selectedColor && <div>Выбранный цвет: {selectedColor}</div>} */}
               </>
             ) : step === 2 ? (
               <>
@@ -94,7 +94,7 @@ export default function GenaRightSide() {
                 </span>
                 {selectedPattern && (
                   <div>
-                    Выбранный паттерн: {selectedPattern.url || 'Неизвестный паттерн'}
+                    {/* Выбранный паттерн: {selectedPattern.url || 'Неизвестный паттерн'} */}
                   </div>
                 )}
               </>

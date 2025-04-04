@@ -34,29 +34,29 @@ export default function GenaPage({ user }) {
   return (
     <div>
       <ImageContextProvider>
-      <ColorContextProvider>
-        <PatternContextProvider>
-          <Row style={{ paddingInline: '5rem', marginTop: '2rem' }}>
-            <Col
-              md={6}
-              style={{
-                border: '1px solid rgba(0, 0, 0, 0.1)',
-                borderRadius: '12px',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-                paddingBottom: '2rem',
-                backgroundColor: '#fff',
-                transition: 'all 0.3s ease',
-                marginBottom: '2rem', // Добавляем отступ снизу для мобильных устройств
-              }}
-            >
-              <GenaPageContent />
-            </Col>
-            <Col md={6}>
-              <GenaRightSide />
-            </Col>
-          </Row>
-        </PatternContextProvider>
-      </ColorContextProvider>
+        <ColorContextProvider>
+          <PatternContextProvider>
+            <Row style={{ paddingInline: '5rem', marginTop: '2rem' }}>
+              <Col
+                md={6}
+                style={{
+                  border: '1px solid rgba(0, 0, 0, 0.1)',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+                  paddingBottom: '2rem',
+                  backgroundColor: '#fff',
+                  transition: 'all 0.3s ease',
+                  marginBottom: '2rem', // Добавляем отступ снизу для мобильных устройств
+                }}
+              >
+                <GenaPageContent />
+              </Col>
+              <Col md={6}>
+                <GenaRightSide />
+              </Col>
+            </Row>
+          </PatternContextProvider>
+        </ColorContextProvider>
       </ImageContextProvider>
     </div>
   );
