@@ -53,7 +53,7 @@ module.exports = {
       //   allowNull: false,
       // },
       desingURL: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT('long'), 
         allowNull: false,
       },
       createdAt: {

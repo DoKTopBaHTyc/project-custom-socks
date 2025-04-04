@@ -27,6 +27,9 @@ class FavoriteService {
       const deletedCount = await Like.findOne({
         where: { userId, sockId: id },
       });
+      if (!deletedCount) {
+        throw new Error('Запись не найдена');
+      }
       return await deletedCount.destroy();
     } catch (error) {
       console.error('Ошибка при удалении из избранного:', error);
@@ -55,8 +58,8 @@ class FavoriteService {
       orderId = newOrder.id;
       console.log(orderId, '3');
     }
-    
-    const [item, created ] = await Cart.findOrCreate({
+
+    const [item, created] = await Cart.findOrCreate({
       where: { sockId, userId },
       defaults: {
         quantity: 1,
@@ -66,7 +69,6 @@ class FavoriteService {
         orderId,
       },
     });
-    
 
     return item;
   }
