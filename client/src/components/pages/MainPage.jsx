@@ -11,7 +11,7 @@ export default function MainPage() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.header}>Создайте носки своей мечты — уникальные, как вы!</h1>
+      <h1 className={styles.header}>Создайте носки своей мечты — уникальные, как Вы!</h1>
       
       <p className={styles.welcomeText}>
         Добро пожаловать в Nanoga — место, где рождаются самые смелые, стильные и необычные носки!
