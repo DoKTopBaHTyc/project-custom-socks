@@ -6,7 +6,7 @@ import ImageChooseList from './ImageChooseList';
 import { useImageContext } from '../../context/ImageContext'; 
 
 
-export default function ImagesContainer({ setStorageFill }) {
+export default function ImagesContainer() {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
 
@@ -20,16 +20,17 @@ export default function ImagesContainer({ setStorageFill }) {
 
   const onClickHandler = () => {
     if (imageUrl) {
-      setStorageFill((prevStorage) => ({ ...prevStorage, image: true }));
+      localStorage.setItem('image', imageUrl);
+      // setStorageFill((prevStorage) => ({ ...prevStorage, image: true }));
     }
     setShowModal(false);
   };
 
-  useEffect(() => {
-    if (imageUrl) {
-      setStorageFill((prevStorage) => ({ ...prevStorage, image: true }));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (imageUrl) {
+  //     setStorageFill((prevStorage) => ({ ...prevStorage, image: true }));
+  //   }
+  // }, []);
 
   // useEffect(() => {
   //   if (showModal === false) {

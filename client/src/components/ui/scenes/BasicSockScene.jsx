@@ -77,6 +77,7 @@ function Sock() {
 
   // Загрузка изображения
   useEffect(() => {
+    console.log(imageUrl)
     // Очищаем текстуру, если изображение не выбрано
     if (!imageUrl) {
       setImageTexture(null);
@@ -203,7 +204,16 @@ function Sock() {
 
 export default function BasicSockScene() {
   return (
-    <div style={{ width: '60%', height: '500px' }}>
+    <div
+      style={{
+        width: '70%',
+        height: '400px',
+        margin: '0 auto',
+        borderRadius: '0.7rem',
+        padding: '4px',
+        background: 'linear-gradient(135deg,rgb(240, 240, 240),rgb(226, 226, 226))'
+      }}
+    >
       <Canvas
         camera={{
           position: [0, 0.8, 0.7],
@@ -231,9 +241,9 @@ export default function BasicSockScene() {
           zoomSpeed={1.2}
           panSpeed={0.5}
           rotateSpeed={0.8}
-          target={[0, 0.1, 0]}
-          minDistance={0.3}
-          maxDistance={10}
+          target={[0, 0.15, 0]} // Смещаем центр вращения еще ниже
+          minDistance={0.3} // Минимальное расстояние зума очень маленькое
+          maxDistance={10} // Максимальное расстояние зума
         />
       </Canvas>
     </div>
