@@ -18,10 +18,6 @@ const ImageUploader = ({ setImageUrl }) => {
     reader.readAsDataURL(file);
   };
 
-  //   useEffect(() => {
-
-  //   })
-
   return (
     <Form>
       <Form.Group controlId="formFile">

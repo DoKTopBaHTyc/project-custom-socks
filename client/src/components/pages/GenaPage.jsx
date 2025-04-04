@@ -8,6 +8,7 @@ import { PatternContextProvider, usePatternContext } from '../../context/Pattern
 import PatternPicker from '../ui/PatternPicker';
 import BasicSockScene from '../ui/scenes/BasicSockScene';
 import { Col, Row } from 'react-bootstrap';
+import { ImageContextProvider } from '../../context/ImageContext';
 
 function GenaPageContent() {
   const { selectedColor } = useColorContext();
@@ -32,6 +33,7 @@ export default function GenaPage({ user }) {
   if (!user) return <Navigate to="/login" />;
   return (
     <div>
+      <ImageContextProvider>
       <ColorContextProvider>
         <PatternContextProvider>
           <Row style={{ paddingInline: '5rem', marginTop: '2rem' }}>
@@ -55,6 +57,7 @@ export default function GenaPage({ user }) {
           </Row>
         </PatternContextProvider>
       </ColorContextProvider>
+      </ImageContextProvider>
     </div>
   );
 }

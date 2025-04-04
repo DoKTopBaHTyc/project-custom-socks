@@ -23,7 +23,7 @@ export default function ImageChooseList({ setImageUrl }) {
     setSelectedId(id === selectedId ? null : id);
     const image = images.find((img) => img.id === id);
     if (image.url) {
-      setImageUrl(image.url);
+      setImageUrl(`/data${image.url}`);
     } else alert('Выберите изображение!');
   };
 
@@ -50,7 +50,7 @@ export default function ImageChooseList({ setImageUrl }) {
             }}
           >
             <img
-              src={image.url}
+              src={`/data${image.url}`}
               alt={`Шаблон №${image.id}`}
               style={{
                 width: '100%',

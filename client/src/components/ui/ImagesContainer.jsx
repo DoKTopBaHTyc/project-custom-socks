@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ListGroup, Button, Modal, Form } from 'react-bootstrap';
 import HuggingFaceAI from './HuggingFaceAI';
 import ImageUploader from './ImageUploader';
 import ImageChooseList from './ImageChooseList';
+import { useImageContext } from '../../context/ImageContext'; 
+
 
 export default function ImagesContainer() {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+
+  const { imageUrl, setImageUrl } = useImageContext();
 
   const handleClose = () => setShowModal(false);
   const handleShow = (contentType) => {
@@ -22,6 +25,12 @@ export default function ImagesContainer() {
     }
     setShowModal(false);
   };
+
+  useEffect(() => {
+    if (imageUrl) {
+      setStorageFill((prevStorage) => ({ ...prevStorage, image: true }));
+    }
+  }, []);
 
   // useEffect(() => {
   //   if (showModal === false) {
